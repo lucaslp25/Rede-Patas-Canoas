@@ -1,2 +1,130 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+// ============================================================================
+// REDE PATAS DE CANOAS — Design System (tema claro)
+// ----------------------------------------------------------------------------
+// Paleta pensada para um app de protetores de animais:
+//   · Laranja-coral quente  → cor da marca, energia e acolhimento
+//   · Verde-teal            → ações de apoio / confirmação
+//   · Violeta               → detalhes e destaques pontuais
+//   · Vermelho / âmbar / verde → status (perdido / encontrado / adoção)
+// ============================================================================
+
+:root {
+
+  // ------------------------------------------------------------------
+  // Cores da marca
+  // ------------------------------------------------------------------
+  --ion-color-primary: #ea580c;
+  --ion-color-primary-rgb: 234, 88, 12;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #c2410c;
+  --ion-color-primary-tint: #ed6b29;
+
+  --ion-color-secondary: #0d9488;
+  --ion-color-secondary-rgb: 13, 148, 136;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #0b7a70;
+  --ion-color-secondary-tint: #25a59a;
+
+  --ion-color-tertiary: #8b5cf6;
+  --ion-color-tertiary-rgb: 139, 92, 246;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #7a51d8;
+  --ion-color-tertiary-tint: #976cf7;
+
+  --ion-color-success: #16a34a;
+  --ion-color-success-rgb: 22, 163, 74;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #138f41;
+  --ion-color-success-tint: #2dac5c;
+
+  --ion-color-warning: #f59e0b;
+  --ion-color-warning-rgb: 245, 158, 11;
+  --ion-color-warning-contrast: #451a03;
+  --ion-color-warning-contrast-rgb: 69, 26, 3;
+  --ion-color-warning-shade: #d88b0a;
+  --ion-color-warning-tint: #f6a823;
+
+  --ion-color-danger: #dc2626;
+  --ion-color-danger-rgb: 220, 38, 38;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #c22121;
+  --ion-color-danger-tint: #e03c3c;
+
+  --ion-color-light: #f5f3f0;
+  --ion-color-light-rgb: 245, 243, 240;
+  --ion-color-light-contrast: #292524;
+  --ion-color-light-contrast-rgb: 41, 37, 36;
+  --ion-color-light-shade: #d8d6d3;
+  --ion-color-light-tint: #f6f4f2;
+
+  --ion-color-medium: #6f7680;
+  --ion-color-medium-rgb: 111, 118, 128;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #626871;
+  --ion-color-medium-tint: #7d848d;
+
+  --ion-color-dark: #292524;
+  --ion-color-dark-rgb: 41, 37, 36;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+  --ion-color-dark-shade: #242120;
+  --ion-color-dark-tint: #3f3b3a;
+
+  // ------------------------------------------------------------------
+  // Superfícies e texto — "papel" levemente aquecido em vez de cinza puro
+  // ------------------------------------------------------------------
+  --ion-background-color: #faf8f5;
+  --ion-background-color-rgb: 250, 248, 245;
+  --ion-text-color: #292524;
+  --ion-text-color-rgb: 41, 37, 36;
+  --ion-card-background: #ffffff;
+  --ion-item-background: #ffffff;
+  --ion-toolbar-background: #faf8f5;
+  --ion-border-color: #ece5db;
+
+  // Escala de cinzas derivada do texto/fundo (usada por subtítulos,
+  // placeholders e linhas dos componentes do Ionic)
+  --ion-color-step-50: #f0edeb;
+  --ion-color-step-100: #e5e3e0;
+  --ion-color-step-150: #dbd8d6;
+  --ion-color-step-200: #d0cecb;
+  --ion-color-step-250: #c6c3c1;
+  --ion-color-step-300: #bbb9b6;
+  --ion-color-step-350: #b1aeac;
+  --ion-color-step-400: #a6a4a1;
+  --ion-color-step-450: #9c9997;
+  --ion-color-step-500: #928f8d;
+  --ion-color-step-600: #7d7978;
+  --ion-color-step-700: #686262;
+  --ion-color-step-800: #534b4c;
+  --ion-color-step-850: #484041;
+  --ion-color-step-900: #3e3537;
+  --ion-color-step-950: #332a2c;
+
+  // ------------------------------------------------------------------
+  // Tipografia
+  // ------------------------------------------------------------------
+  --ion-font-family: 'Nunito', 'Nunito Sans', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+
+  // ------------------------------------------------------------------
+  // Formas, sombras e tokens próprios do app
+  // ------------------------------------------------------------------
+  --app-radius-sm: 12px;
+  --app-radius-md: 18px;
+  --app-radius-lg: 26px;
+
+  --app-shadow-1: 0 1px 2px rgba(41, 37, 36, 0.04), 0 4px 16px rgba(41, 37, 36, 0.06);
+  --app-shadow-2: 0 2px 6px rgba(41, 37, 36, 0.05), 0 16px 36px rgba(41, 37, 36, 0.12);
+  --app-shadow-flutua: 0 10px 26px rgba(234, 88, 12, 0.35);
+
+  // Patinha decorativa (usada como marca d'água em cards, hero e mapa)
+  --app-pata-marca: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%23ea580c' fill-opacity='.13'%3E%3Cellipse cx='31' cy='27' rx='10' ry='13'/%3E%3Cellipse cx='69' cy='27' rx='10' ry='13'/%3E%3Cellipse cx='13' cy='51' rx='9' ry='11'/%3E%3Cellipse cx='87' cy='51' rx='9' ry='11'/%3E%3Cpath d='M50 40c-17 0-29 13-29 26 0 10 8 15 14 15 6 0 9-4 15-4s9 4 15 4c6 0 14-5 14-15 0-13-12-26-29-26z'/%3E%3C/g%3E%3C/svg%3E");
+  --app-pata-clara: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%23ffffff' fill-opacity='.85'%3E%3Cellipse cx='31' cy='27' rx='10' ry='13'/%3E%3Cellipse cx='69' cy='27' rx='10' ry='13'/%3E%3Cellipse cx='13' cy='51' rx='9' ry='11'/%3E%3Cellipse cx='87' cy='51' rx='9' ry='11'/%3E%3Cpath d='M50 40c-17 0-29 13-29 26 0 10 8 15 14 15 6 0 9-4 15-4s9 4 15 4c6 0 14-5 14-15 0-13-12-26-29-26z'/%3E%3C/g%3E%3C/svg%3E");
+}

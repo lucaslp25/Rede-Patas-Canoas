@@ -1,0 +1,27 @@
+<ion-tabs>
+  <!-- Ionic 9: o IonTabs já cria o ion-router-outlet interno automaticamente.
+       Não adicionar um manual aqui — ele fica por cima do conteúdo e bloqueia cliques. -->
+  <ion-tab-bar slot="bottom" class="dock">
+    <ion-tab-button tab="feed" href="/feed" class="aba" aria-label="Feed de pets">
+      <ion-icon aria-hidden="true" name="paw-outline"></ion-icon>
+      <ion-label>Feed</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="mapa" href="/mapa" class="aba" aria-label="Mapa de pets">
+      <ion-icon aria-hidden="true" name="map-outline"></ion-icon>
+      <ion-label>Mapa</ion-label>
+    </ion-tab-button>
+
+    <!-- Ação central em destaque: cadastrar novo pet -->
+    <div class="aba-cta-slot">
+      <button type="button" class="aba-cta" (click)="abrirCadastro()" aria-label="Cadastrar novo pet">
+        <ion-icon aria-hidden="true" name="add"></ion-icon>
+      </button>
+    </div>
+
+    <ion-tab-button tab="sobre" href="/sobre" class="aba" aria-label="Sobre a rede">
+      <ion-icon aria-hidden="true" name="information-circle-outline"></ion-icon>
+      <ion-label>Sobre</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

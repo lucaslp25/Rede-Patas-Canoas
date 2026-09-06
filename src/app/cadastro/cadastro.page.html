@@ -1,0 +1,131 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/feed" text="" aria-label="Voltar"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Nova ocorrência</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="app-container">
+
+    <p class="intro">
+      Quanto mais detalhes, maiores as chances de reencontro. 💛
+    </p>
+
+    <!-- 1 · O que aconteceu? -->
+    <div class="secao-cabecalho">
+      <span class="secao-num num-1" aria-hidden="true">1</span>
+      <h2 class="app-secao-titulo sem-margem">O que aconteceu?</h2>
+    </div>
+
+    <div class="tipos" role="radiogroup" aria-label="Tipo de registro">
+      @for (t of tipos; track t.valor) {
+        <button type="button" class="tipo-card"
+          [class]="'tipo-card tipo-' + t.valor + (form.tipo === t.valor ? ' selecionado' : '')"
+          (click)="form.tipo = t.valor" [attr.aria-checked]="form.tipo === t.valor" role="radio">
+          <span class="tipo-icone" aria-hidden="true">
+            <ion-icon [name]="t.icone"></ion-icon>
+          </span>
+          <strong>{{ t.rotulo }}</strong>
+          <span>{{ t.dica }}</span>
+        </button>
+      }
+    </div>
+
+    <button type="button" class="seletor-foto" (click)="capturarFoto()">
+      <span class="seletor-foto-icone" aria-hidden="true">
+        <ion-icon name="camera-outline"></ion-icon>
+      </span>
+      <span class="seletor-foto-texto">
+        <strong>Adicionar foto do pet</strong>
+        <span>A foto aumenta muito as chances de reencontro</span>
+      </span>
+    </button>
+
+    <!-- 2 · Sobre o pet -->
+    <div class="secao-cabecalho">
+      <span class="secao-num num-2" aria-hidden="true">2</span>
+      <h2 class="app-secao-titulo sem-margem">Sobre o pet</h2>
+    </div>
+
+    <ion-item class="campo" fill="outline">
+      <ion-input label="Nome do pet (se souber)" labelPlacement="floating" type="text"
+        placeholder="Ex: Bolinha" [(ngModel)]="form.nome"></ion-input>
+    </ion-item>
+
+    <div class="linha-campos">
+      <ion-item class="campo" fill="outline">
+        <ion-select label="Espécie" labelPlacement="floating" interface="action-sheet"
+          cancelText="Cancelar" [(ngModel)]="form.especie">
+          <ion-select-option value="cao">Cão</ion-select-option>
+          <ion-select-option value="gato">Gato</ion-select-option>
+          <ion-select-option value="outro">Outro</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item class="campo" fill="outline">
+        <ion-select label="Porte" labelPlacement="floating" interface="action-sheet"
+          cancelText="Cancelar" [(ngModel)]="form.porte">
+          <ion-select-option value="pequeno">Pequeno</ion-select-option>
+          <ion-select-option value="medio">Médio</ion-select-option>
+          <ion-select-option value="grande">Grande</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </div>
+
+    <ion-item class="campo" fill="outline">
+      <ion-input label="Cor predominante" labelPlacement="floating" type="text"
+        placeholder="Ex: caramelo" [(ngModel)]="form.cor"></ion-input>
+    </ion-item>
+
+    <ion-item class="campo" fill="outline">
+      <ion-textarea label="Descrição e detalhes" labelPlacement="floating" rows="4"
+        placeholder="Comportamento, coleira, marquinhas..." [(ngModel)]="form.descricao"></ion-textarea>
+    </ion-item>
+
+    <!-- 3 · Onde foi visto? -->
+    <div class="secao-cabecalho">
+      <span class="secao-num num-3" aria-hidden="true">3</span>
+      <h2 class="app-secao-titulo sem-margem">Onde foi visto?</h2>
+    </div>
+
+    <ion-item class="campo" fill="outline">
+      <ion-input label="Ponto de referência" labelPlacement="floating" type="text"
+        placeholder="Ex: perto do colégio La Salle" [(ngModel)]="form.referencia"></ion-input>
+    </ion-item>
+
+    <button type="button" class="botao-gps" (click)="capturarLocalizacao()">
+      <span class="gps-icone" aria-hidden="true">
+        <ion-icon name="navigate-outline"></ion-icon>
+      </span>
+      <span class="gps-texto">
+        <strong>Usar minha localização atual</strong>
+        <span>Anexamos as coordenadas ao registro</span>
+      </span>
+    </button>
+
+    <!-- 4 · Seu contato -->
+    <div class="secao-cabecalho">
+      <span class="secao-num num-4" aria-hidden="true">4</span>
+      <h2 class="app-secao-titulo sem-margem">Seu contato</h2>
+    </div>
+
+    <ion-item class="campo" fill="outline">
+      <ion-input label="Telefone / WhatsApp" labelPlacement="floating" type="tel"
+        placeholder="(51) 9 9999-9999" [(ngModel)]="form.telefone"></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" class="botao-gradiente botao-publicar" (click)="salvar()">
+      <ion-icon slot="start" name="paw" aria-hidden="true"></ion-icon>
+      Publicar registro
+    </ion-button>
+
+    <p class="nota-offline">
+      <ion-icon aria-hidden="true" name="cloud-offline-outline"></ion-icon>
+      Funciona offline: o registro é salvo no seu aparelho e sincronizado quando houver internet.
+    </p>
+
+  </div>
+</ion-content>

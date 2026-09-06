@@ -1,0 +1,117 @@
+<ion-header class="cabecalho-flutuante ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/feed" text="" aria-label="Voltar"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <!-- Foto em destaque -->
+  <div class="hero">
+    @if (pet.foto) {
+      <img class="hero-foto" [src]="pet.foto" [alt]="'Foto de ' + pet.nome" (error)="falhaFoto()" />
+    }
+    <div class="hero-scrim" aria-hidden="true"></div>
+    <span [class]="'chip-status status-' + pet.status + ' hero-status'">{{ rotulo(pet.status) }}</span>
+    <span class="pet-foto-tempo hero-tempo">
+      <ion-icon aria-hidden="true" name="time-outline"></ion-icon>
+      {{ pet.tempo }}
+    </span>
+  </div>
+
+  <div class="app-container corpo">
+
+    <div class="titulo-row">
+      <h1>{{ pet.nome }}</h1>
+      <ion-button fill="clear" class="botao-compartilhar" (click)="compartilhar()"
+        aria-label="Compartilhar ocorrência">
+        <ion-icon slot="icon-only" name="share-social-outline"></ion-icon>
+      </ion-button>
+    </div>
+
+    <p class="subtitulo">{{ pet.especie }} · {{ pet.porte }}</p>
+
+    <div class="fichas">
+      <span class="ficha">
+        <ion-icon aria-hidden="true" name="calendar-clear-outline"></ion-icon>
+        {{ pet.idade }}
+      </span>
+      <span class="ficha">
+        <ion-icon aria-hidden="true" name="color-palette-outline"></ion-icon>
+        {{ pet.cor }}
+      </span>
+      <span class="ficha">
+        <ion-icon aria-hidden="true" name="resize-outline"></ion-icon>
+        Porte {{ pet.porte.toLowerCase() }}
+      </span>
+    </div>
+
+    <h2 class="app-secao-titulo">
+      <ion-icon aria-hidden="true" name="paw"></ion-icon>
+      A história
+    </h2>
+    <p class="historia">{{ pet.descricao }}</p>
+
+    <h2 class="app-secao-titulo">
+      <ion-icon aria-hidden="true" name="location-outline"></ion-icon>
+      Localização
+    </h2>
+    <div class="cartao-local">
+      <div class="mapa-falso mini-mapa" aria-hidden="true">
+        <div class="pino-mapa">
+          <ion-icon name="paw"></ion-icon>
+        </div>
+      </div>
+      <div class="local-info">
+        <h3>{{ pet.local }}</h3>
+        <p>Referência: {{ pet.referencia }}</p>
+        <a class="link-mapa" routerLink="/mapa">
+          Ver no mapa geral
+          <ion-icon aria-hidden="true" name="chevron-forward-outline"></ion-icon>
+        </a>
+      </div>
+    </div>
+
+    <h2 class="app-secao-titulo">
+      <ion-icon aria-hidden="true" name="call-outline"></ion-icon>
+      Contato
+    </h2>
+    <div class="cartao-contato">
+      <div class="contato-identidade">
+        <span class="contato-avatar" aria-hidden="true">{{ iniciais(pet.contatoNome) }}</span>
+        <div>
+          <h3>{{ pet.contatoNome }}</h3>
+          <p>{{ pet.contatoPapel }}</p>
+          <p class="contato-fone">{{ pet.contatoFone }}</p>
+        </div>
+      </div>
+      <a class="acao-zap" [href]="zapLink" target="_blank" rel="noopener">
+        <ion-icon aria-hidden="true" name="chatbubble-ellipses-outline"></ion-icon>
+        Chamar no WhatsApp
+      </a>
+    </div>
+
+    <div class="acoes-secundarias">
+      <ion-button expand="block" fill="outline" class="acao-secundaria" (click)="gerarCartaz()">
+        <ion-icon slot="start" name="document-text-outline"></ion-icon>
+        Gerar cartaz para imprimir
+      </ion-button>
+      <ion-button expand="block" fill="outline" color="success" class="acao-secundaria" (click)="marcarResolvido()">
+        <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+        Marcar como resolvido
+      </ion-button>
+    </div>
+
+  </div>
+</ion-content>
+
+<ion-footer class="ion-no-border rodape-acoes">
+  <ion-toolbar>
+    <ion-button expand="block" class="botao-gradiente" [href]="'tel:' + pet.foneE164">
+      <ion-icon slot="start" name="call-outline" aria-hidden="true"></ion-icon>
+      Tenho informações sobre {{ pet.nome }}
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

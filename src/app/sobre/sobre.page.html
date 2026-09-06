@@ -1,0 +1,113 @@
+<ion-content>
+
+  <!-- Hero da rede -->
+  <header class="hero-sobre">
+    <div class="hero-logo" aria-hidden="true">
+      <ion-icon name="paw"></ion-icon>
+    </div>
+    <h1>Rede Patas de Canoas</h1>
+    <p>Unindo protetores para reconnectar pets às suas famílias.</p>
+
+    <div class="hero-chips" aria-label="Destaques da rede">
+      <span>100% voluntário</span>
+      <span>Funciona offline</span>
+      <span>Canoas · RS</span>
+    </div>
+  </header>
+
+  <div class="app-container">
+
+    <!-- Números da rede -->
+    <section class="estatisticas" aria-label="Números da rede">
+      @for (item of estatisticas; track item.rotulo) {
+        <div class="estatistica">
+          <ion-icon aria-hidden="true" [name]="item.icone"></ion-icon>
+          <strong>{{ item.valor }}</strong>
+          <span>{{ item.rotulo }}</span>
+        </div>
+      }
+    </section>
+
+    <h2 class="app-secao-titulo">
+      <ion-icon aria-hidden="true" name="paw"></ion-icon>
+      Como funciona
+    </h2>
+    <ol class="passos">
+      @for (passo of passos; track passo.titulo; let i = $index) {
+        <li class="passo">
+          <span class="passo-marcador" aria-hidden="true">
+            <ion-icon [name]="passo.icone"></ion-icon>
+          </span>
+          <div class="passo-texto">
+            <h3>{{ i + 1 }}. {{ passo.titulo }}</h3>
+            <p>{{ passo.texto }}</p>
+          </div>
+        </li>
+      }
+    </ol>
+
+    <h2 class="app-secao-titulo">
+      <ion-icon aria-hidden="true" name="heart-outline"></ion-icon>
+      O que você encontra aqui
+    </h2>
+    <div class="recursos">
+      @for (recurso of recursos; track recurso.titulo) {
+        <div class="recurso" [class]="'recurso recurso-' + recurso.cor">
+          <span class="recurso-icone" aria-hidden="true">
+            <ion-icon [name]="recurso.icone"></ion-icon>
+          </span>
+          <h3>{{ recurso.titulo }}</h3>
+          <p>{{ recurso.texto }}</p>
+        </div>
+      }
+    </div>
+
+    <h2 class="app-secao-titulo">
+      <ion-icon aria-hidden="true" name="people-outline"></ion-icon>
+      Nossa missão
+    </h2>
+    <p class="missao">
+      Somos um coletivo de protetores voluntários de Canoas. Acreditamos que
+      <strong>nenhum pet deve ficar longe de casa por falta de informação</strong>.
+      O app conecta quem perdeu, quem encontrou e quem quer adotar — de bairro em
+      bairro, com a força da comunidade.
+    </p>
+
+    <h2 class="app-secao-titulo">
+      <ion-icon aria-hidden="true" name="mail-outline"></ion-icon>
+      Fale com a gente
+    </h2>
+    <div class="canais">
+      @for (canal of contatos; track canal.rotulo) {
+        <a class="canal" [href]="canal.link" target="_blank" rel="noopener">
+          <span class="canal-icone" aria-hidden="true">
+            <ion-icon [name]="canal.icone"></ion-icon>
+          </span>
+          <span class="canal-texto">
+            <span class="canal-rotulo">{{ canal.rotulo }}</span>
+            <strong>{{ canal.valor }}</strong>
+          </span>
+          <ion-icon class="canal-seta" aria-hidden="true" name="chevron-forward-outline"></ion-icon>
+        </a>
+      }
+    </div>
+
+    <!-- Chamada final -->
+    <section class="cta-final">
+      <h2>Faça parte da rede</h2>
+      <p>Cadastre um pet, compartilhe ou torne-se um protetor ativo na sua região.</p>
+      <ion-button expand="block" class="botao-gradiente" routerLink="/cadastro">
+        <ion-icon slot="start" name="paw" aria-hidden="true"></ion-icon>
+        Quero ajudar agora
+      </ion-button>
+    </section>
+
+  </div>
+
+  <footer class="rodape-sobre">
+    Feito com
+    <ion-icon aria-hidden="true" name="heart"></ion-icon>
+    por voluntários em Canoas · v0.1
+  </footer>
+
+</ion-content>

@@ -1,0 +1,115 @@
+<ion-header [translucent]="true" class="ion-no-border">
+  <ion-toolbar>
+    <div class="marca">
+      <div class="marca-logo" aria-hidden="true">
+        <ion-icon name="paw"></ion-icon>
+      </div>
+      <div class="marca-texto">
+        <h1>Rede Patas</h1>
+        <p>Canoas · Rio Grande do Sul</p>
+      </div>
+    </div>
+
+    <ion-buttons slot="end">
+      <ion-button class="botao-sino" (click)="abrirNotificacoes()" aria-label="Notificações">
+        <ion-icon slot="icon-only" [name]="notificacoesNaoLidas > 0 ? 'notifications' : 'notifications-outline'"></ion-icon>
+        @if (notificacoesNaoLidas > 0) {
+          <span class="sino-badge">{{ notificacoesNaoLidas > 9 ? '9+' : notificacoesNaoLidas }}</span>
+        }
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="atualizar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="app-container">
+
+    <!-- Chamada rápida para o cadastro -->
+    <section class="cartao-cta" routerLink="/cadastro" role="button" tabindex="0"
+      aria-label="Perdeu ou encontrou um pet? Criar registro">
+      <div>
+        <h2>Perdeu ou encontrou um pet?</h2>
+        <p>Avise a rede em menos de 1 minuto</p>
+      </div>
+      <span class="cta-seta" aria-hidden="true">
+        <ion-icon name="paw"></ion-icon>
+      </span>
+    </section>
+
+    <ion-searchbar
+      class="busca"
+      placeholder="Buscar por nome ou bairro"
+      inputmode="search"
+      [(ngModel)]="busca">
+    </ion-searchbar>
+
+    <div class="trilho-chips" role="tablist" aria-label="Filtrar pets">
+      <ion-chip class="chip-filtro" [class.ativo]="filtroAtual === 'todos'" (click)="filtroAtual = 'todos'">
+        <ion-icon aria-hidden="true" name="paw-outline"></ion-icon>
+        Todos
+      </ion-chip>
+      <ion-chip class="chip-filtro" [class.ativo]="filtroAtual === 'perdido'" (click)="filtroAtual = 'perdido'">
+        <ion-icon aria-hidden="true" name="sad-outline"></ion-icon>
+        Perdidos
+      </ion-chip>
+      <ion-chip class="chip-filtro" [class.ativo]="filtroAtual === 'encontrado'" (click)="filtroAtual = 'encontrado'">
+        <ion-icon aria-hidden="true" name="happy-outline"></ion-icon>
+        Encontrados
+      </ion-chip>
+      <ion-chip class="chip-filtro" [class.ativo]="filtroAtual === 'adocao'" (click)="filtroAtual = 'adocao'">
+        <ion-icon aria-hidden="true" name="heart-outline"></ion-icon>
+        Adoção
+      </ion-chip>
+    </div>
+
+    <p class="contagem">
+      <span class="dot-ao-vivo" aria-hidden="true"></span>
+      @if (petsFiltrados.length === 1) {
+        1 pet aguardando ajuda na sua região
+      } @else {
+        {{ petsFiltrados.length }} pets aguardando ajuda na sua região
+      }
+    </p>
+
+    @for (pet of petsFiltrados; track pet.id) {
+      <article class="pet-card" [routerLink]="['/detalhe']" [queryParams]="{ id: pet.id }"
+        tabindex="0" [attr.aria-label]="'Ver detalhes de ' + pet.nome">
+        <div class="pet-foto">
+          @if (pet.foto) {
+            <img [src]="pet.foto" [alt]="'Foto de ' + pet.nome" loading="lazy" (error)="falhaFoto(pet)" />
+          }
+          <span [class]="'chip-status status-' + pet.status">{{ rotulo(pet.status) }}</span>
+          <span class="pet-foto-tempo">{{ pet.tempo }}</span>
+        </div>
+
+        <div class="pet-info">
+          <div class="pet-titulo-row">
+            <h2>{{ pet.nome }}</h2>
+            <span class="pet-dist">
+              <ion-icon aria-hidden="true" name="walk-outline"></ion-icon>
+              {{ pet.distancia }}
+            </span>
+          </div>
+          <p class="pet-detalhes">{{ pet.especie }} · {{ pet.porte }} · {{ pet.cor }}</p>
+          <p class="pet-local">
+            <ion-icon aria-hidden="true" name="location-outline"></ion-icon>
+            {{ pet.local }}
+          </p>
+        </div>
+      </article>
+    } @empty {
+      <div class="estado-vazio">
+        <div class="icone" aria-hidden="true">
+          <ion-icon name="paw-outline"></ion-icon>
+        </div>
+        <h3>Nenhum pet por aqui</h3>
+        <p>Não encontramos pets com esse filtro ou busca.<br />Que tal limpar a busca e tentar de novo?</p>
+      </div>
+    }
+
+  </div>
+</ion-content>

@@ -1,0 +1,85 @@
+<ion-content [fullscreen]="true" class="tela-mapa">
+
+  <!-- Mapa ilustrativo: aqui entra o mapa real (Lucas implementa) -->
+  <div class="mapa-falso mapa-tela" aria-hidden="true">
+    <span class="mini-pino st-perdido" style="left: 24%; top: 34%;"></span>
+    <span class="mini-pino st-encontrado" style="left: 68%; top: 26%;"></span>
+    <span class="mini-pino st-adocao" style="left: 40%; top: 58%;"></span>
+    <span class="mini-pino st-perdido" style="left: 78%; top: 62%;"></span>
+    <span class="mini-pino st-adocao" style="left: 16%; top: 68%;"></span>
+    <div class="pino-mapa">
+      <ion-icon name="paw"></ion-icon>
+    </div>
+    <span class="selo-mapa">Mapa ilustrativo</span>
+  </div>
+
+  <!-- Busca e filtros flutuando sobre o mapa -->
+  <div class="flutuante-topo">
+    <ion-searchbar
+      class="busca"
+      placeholder="Buscar bairro ou endereço"
+      inputmode="search"
+      [(ngModel)]="busca">
+    </ion-searchbar>
+
+    <div class="trilho-chips trilho-mapa" role="tablist" aria-label="Filtrar pets no mapa">
+      <ion-chip class="chip-filtro" [class.ativo]="filtroAtual === 'todos'" (click)="filtroAtual = 'todos'">
+        <ion-icon aria-hidden="true" name="paw-outline"></ion-icon>
+        Todos
+      </ion-chip>
+      <ion-chip class="chip-filtro" [class.ativo]="filtroAtual === 'perdido'" (click)="filtroAtual = 'perdido'">
+        <ion-icon aria-hidden="true" name="sad-outline"></ion-icon>
+        Perdidos
+      </ion-chip>
+      <ion-chip class="chip-filtro" [class.ativo]="filtroAtual === 'encontrado'" (click)="filtroAtual = 'encontrado'">
+        <ion-icon aria-hidden="true" name="happy-outline"></ion-icon>
+        Encontrados
+      </ion-chip>
+      <ion-chip class="chip-filtro" [class.ativo]="filtroAtual === 'adocao'" (click)="filtroAtual = 'adocao'">
+        <ion-icon aria-hidden="true" name="heart-outline"></ion-icon>
+        Adoção
+      </ion-chip>
+    </div>
+  </div>
+
+  <!-- Centralizar na posição do usuário -->
+  <button type="button" class="botao-localizar" (click)="centralizar()" aria-label="Centralizar na minha localização">
+    <ion-icon aria-hidden="true" name="locate-outline"></ion-icon>
+  </button>
+
+  <!-- Painel inferior: pets por perto -->
+  <section class="painel" aria-label="Pets por perto">
+    <span class="painel-alca" aria-hidden="true"></span>
+
+    <div class="painel-cabeca">
+      <h2>Pets por perto</h2>
+      <span class="painel-qtd">{{ petsFiltrados.length }}</span>
+    </div>
+
+    @if (petsFiltrados.length > 0) {
+      <div class="painel-trilho">
+        @for (pet of petsFiltrados; track pet.id) {
+          <a class="mini-card" [routerLink]="['/detalhe']" [queryParams]="{ id: pet.id }"
+            [attr.aria-label]="'Ver detalhes de ' + pet.nome">
+            <span class="mini-foto">
+              @if (pet.foto) {
+                <img [src]="pet.foto" [alt]="'Foto de ' + pet.nome" loading="lazy" (error)="falhaFoto(pet)" />
+              } @else {
+                <ion-icon aria-hidden="true" name="paw-outline"></ion-icon>
+              }
+            </span>
+            <strong>{{ pet.nome }}</strong>
+            <span [class]="'mini-st st-' + pet.status">{{ rotulo(pet.status) }}</span>
+            <span class="mini-dist">
+              <ion-icon aria-hidden="true" name="walk-outline"></ion-icon>
+              {{ pet.distancia }}
+            </span>
+          </a>
+        }
+      </div>
+    } @else {
+      <p class="painel-vazio">Nenhum pet com esse filtro por aqui. 🐾</p>
+    }
+  </section>
+
+</ion-content>

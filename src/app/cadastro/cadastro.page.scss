@@ -1,0 +1,283 @@
+// Cadastro — formulário dividido em seções numeradas e fáceis de preencher.
+
+ion-toolbar {
+  --border-width: 0;
+
+  ion-title {
+    font-size: 17px;
+    font-weight: 800;
+  }
+}
+
+.intro {
+  margin: 6px 2px 0;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ion-color-step-600);
+}
+
+// ------------------------------------------------------- seções numeradas
+.secao-cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.secao-num {
+  flex-shrink: 0;
+  width: 27px;
+  height: 27px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 900;
+
+  &.num-1 {
+    background: linear-gradient(135deg, #f97316, #ea580c);
+  }
+
+  &.num-2 {
+    background: linear-gradient(135deg, #14b8a6, #0d9488);
+  }
+
+  &.num-3 {
+    background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+  }
+
+  &.num-4 {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+  }
+}
+
+.app-secao-titulo.sem-margem {
+  margin: 0;
+}
+
+// ---------------------------------------------------------- tipo (cards)
+.tipos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.tipo-card {
+  padding: 14px 8px 12px;
+  border-radius: var(--app-radius-md);
+  border: 2px solid var(--ion-border-color);
+  background: #ffffff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+
+  &:active {
+    transform: scale(0.96);
+  }
+
+  strong {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--ion-text-color);
+  }
+
+  span:not(.tipo-icone) {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--ion-color-step-500);
+    line-height: 1.35;
+  }
+}
+
+.tipo-icone {
+  width: 38px;
+  height: 38px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 6px;
+  background: var(--ion-color-light);
+  color: var(--ion-color-step-500);
+  font-size: 20px;
+  transition: inherit;
+}
+
+.tipo-perdido.selecionado {
+  border-color: var(--ion-color-danger);
+  background: rgba(220, 38, 38, 0.05);
+
+  .tipo-icone {
+    background: rgba(220, 38, 38, 0.12);
+    color: var(--ion-color-danger);
+  }
+}
+
+.tipo-encontrado.selecionado {
+  border-color: var(--ion-color-warning);
+  background: rgba(245, 158, 11, 0.07);
+
+  .tipo-icone {
+    background: rgba(245, 158, 11, 0.16);
+    color: #b45309;
+  }
+}
+
+.tipo-adocao.selecionado {
+  border-color: var(--ion-color-success);
+  background: rgba(22, 163, 74, 0.06);
+
+  .tipo-icone {
+    background: rgba(22, 163, 74, 0.12);
+    color: var(--ion-color-success);
+  }
+}
+
+// ------------------------------------------------------------- foto
+.seletor-foto {
+  width: 100%;
+  margin-top: 14px;
+  padding: 18px 16px;
+  border: 2px dashed rgba(234, 88, 12, 0.4);
+  border-radius: var(--app-radius-md);
+  background: rgba(234, 88, 12, 0.04);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  transition: background 0.15s ease, transform 0.15s ease;
+
+  &:active {
+    transform: scale(0.98);
+    background: rgba(234, 88, 12, 0.09);
+  }
+}
+
+.seletor-foto-icone {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #f97316, #dc2626);
+  color: #fff;
+  font-size: 22px;
+  box-shadow: 0 6px 16px rgba(234, 88, 12, 0.3);
+}
+
+.seletor-foto-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  strong {
+    font-size: 14.5px;
+    font-weight: 800;
+    color: var(--ion-text-color);
+  }
+
+  span {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ion-color-step-500);
+    line-height: 1.4;
+  }
+}
+
+// ------------------------------------------------------------- campos
+.linha-campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.campo {
+  --background: #ffffff;
+  --border-radius: 16px;
+  --border-width: 1.5px;
+  --border-color: var(--ion-border-color);
+  --highlight-color-focused: var(--ion-color-primary);
+  --highlight-color-valid: var(--ion-color-success);
+  margin: 0 0 14px;
+  box-shadow: var(--app-shadow-1);
+}
+
+// ------------------------------------------------------------- GPS
+.botao-gps {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px dashed rgba(13, 148, 136, 0.45);
+  border-radius: var(--app-radius-md);
+  background: rgba(13, 148, 136, 0.05);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  transition: background 0.15s ease, transform 0.15s ease;
+
+  &:active {
+    transform: scale(0.98);
+    background: rgba(13, 148, 136, 0.1);
+  }
+}
+
+.gps-icone {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #14b8a6, #0d9488);
+  color: #fff;
+  font-size: 20px;
+}
+
+.gps-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  strong {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--ion-text-color);
+  }
+
+  span {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ion-color-step-500);
+  }
+}
+
+// ---------------------------------------------------------- publicar
+.botao-publicar {
+  margin-top: 30px;
+}
+
+.nota-offline {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 14px 4px 0;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--ion-color-step-500);
+
+  ion-icon {
+    flex-shrink: 0;
+    font-size: 15px;
+    margin-top: 1px;
+    color: var(--ion-color-secondary);
+  }
+}
