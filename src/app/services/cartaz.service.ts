@@ -45,7 +45,7 @@ export class CartazService {
       doc.text(linhas, meio, 202, { align: 'center' });
     }
 
-    doc.setFillColor("20");
+    doc.setFillColor(20, 20, 20);
     doc.rect(30, 232, 150, 22, 'F');
     doc.setTextColor(255);
     doc.setFont('helvetica', 'bold');

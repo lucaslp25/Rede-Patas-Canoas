@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { IonApp, IonRouterOutlet } from '@ionic/angular'; // <-- Sem /standalone
+import { Component, inject } from '@angular/core';
+import { IonApp, IonRouterOutlet } from '@ionic/angular';
+import { SeedService } from './services/seed.service';
 
 @Component({
   selector: 'app-root',
@@ -12,4 +13,8 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular'; // <-- Sem /standalone
   ],
 })
 export class AppComponent {
+  private seed = inject(SeedService);
+  constructor() {
+    this.seed.pronto();
+  }
 }

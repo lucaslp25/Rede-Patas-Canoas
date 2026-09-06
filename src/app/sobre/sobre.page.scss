@@ -1,5 +1,3 @@
-// Sobre — página institucional da rede.
-
 // ------------------------------------------------------------------ hero
 .hero-sobre {
   position: relative;
@@ -90,8 +88,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
-  margin-top: -32px; // sobe sobre o hero
-  position: relative; // garante que fiquem NA FRENTE do hero (que é posicionado)
+  margin-top: -32px; 
+  position: relative;
   z-index: 1;
 }
 
@@ -140,7 +138,6 @@
   gap: 14px;
   padding-bottom: 20px;
 
-  // linha que conecta os passos
   &::before {
     content: '';
     position: absolute;
@@ -372,23 +369,5 @@
     --background-hover: #ffffff;
     --color: var(--ion-color-secondary);
     --box-shadow: 0 8px 18px rgba(41, 37, 36, 0.18);
-  }
-}
-
-// -------------------------------------------------------------------- rodapé
-.rodape-sobre {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  padding: 26px 20px calc(30px + env(safe-area-inset-bottom));
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--ion-color-step-500);
-  text-align: center;
-
-  ion-icon {
-    color: var(--ion-color-danger);
-    font-size: 13px;
   }
 }

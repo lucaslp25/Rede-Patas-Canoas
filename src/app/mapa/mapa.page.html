@@ -1,16 +1,19 @@
 <ion-content [fullscreen]="true" class="tela-mapa">
 
-  <!-- Mapa ilustrativo: aqui entra o mapa real (Lucas implementa) -->
-  <div class="mapa-falso mapa-tela" aria-hidden="true">
-    <span class="mini-pino st-perdido" style="left: 24%; top: 34%;"></span>
-    <span class="mini-pino st-encontrado" style="left: 68%; top: 26%;"></span>
-    <span class="mini-pino st-adocao" style="left: 40%; top: 58%;"></span>
-    <span class="mini-pino st-perdido" style="left: 78%; top: 62%;"></span>
-    <span class="mini-pino st-adocao" style="left: 16%; top: 68%;"></span>
-    <div class="pino-mapa">
+  <!-- pinos posicionados pela projeção das coordenadas
+    -->
+  <div class="mapa-falso mapa-tela">
+    @for (pino of pinos; track pino.id) {
+      <span [class]="'mini-pino st-' + pino.status"
+        [style.left.%]="pino.esquerda"
+        [style.top.%]="pino.topo"></span>
+    }
+
+    <div class="pino-mapa"
+      [style.left.%]="pinoUsuario.esquerda"
+      [style.top.%]="pinoUsuario.topo">
       <ion-icon name="paw"></ion-icon>
     </div>
-    <span class="selo-mapa">Mapa ilustrativo</span>
   </div>
 
   <!-- Busca e filtros flutuando sobre o mapa -->

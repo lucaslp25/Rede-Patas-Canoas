@@ -1,6 +1,4 @@
-// Detalhe — hero com foto, fichas do pet, localização e ações.
-
-// Cabeçalho transparente sobre a foto
+// Cabeçalho 
 .cabecalho-flutuante ion-toolbar {
   --background: transparent;
   --border-width: 0;
@@ -93,7 +91,7 @@ ion-back-button {
   color: var(--ion-color-step-500);
 }
 
-// Fichas rápidas (idade, cor, porte)
+// Fichas rápidas
 .fichas {
   display: flex;
   flex-wrap: wrap;
@@ -259,7 +257,7 @@ ion-back-button {
   }
 }
 
-// ------------------------------------------------------------------ rodapé
+// ------------------------------------------------------------------ footer
 .rodape-acoes ion-toolbar {
   --background: #ffffff;
   --border-width: 0;

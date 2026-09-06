@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonContent, IonButton, IonIcon } from '@ionic/angular'; // <-- Sem /standalone
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
+import { IonContent, IonButton, IonIcon } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 
 import { addIcons } from 'ionicons';
@@ -8,6 +8,14 @@ import {
   homeOutline, sadOutline, heartOutline, heart, logoInstagram,
   logoWhatsapp, mailOutline, chevronForwardOutline
 } from 'ionicons/icons';
+
+import { StorageService } from '../services/storage.service';
+
+interface Estatistica {
+  valor: string;
+  rotulo: string;
+  icone: string;
+}
 
 interface Passo {
   titulo: string;
@@ -37,12 +45,15 @@ interface CanalContato {
   imports: [IonContent, IonButton, IonIcon, RouterModule],
 })
 export class SobrePage {
-  // Números ilustrativos para a UI — TODO: Lucas implementa a lógica nativa
-  // aqui (contadores reais a partir do StorageService).
-  estatisticas = [
-    { valor: '128', rotulo: 'pets cadastrados', icone: 'paw' },
-    { valor: '47', rotulo: 'reencontros', icone: 'happy-outline' },
-    { valor: '63', rotulo: 'protetores ativos', icone: 'people-outline' },
+
+  private storage = inject(StorageService);
+  private cdr = inject(ChangeDetectorRef);
+
+  /** Contadores reais, apurados a partir das ocorrências persistidas. */
+  estatisticas: Estatistica[] = [
+    { valor: '0', rotulo: 'pets cadastrados', icone: 'paw' },
+    { valor: '0', rotulo: 'reencontros', icone: 'happy-outline' },
+    { valor: '0', rotulo: 'aguardando adoção', icone: 'heart-outline' },
   ];
 
   passos: Passo[] = [
@@ -66,13 +77,13 @@ export class SobrePage {
   recursos: Recurso[] = [
     {
       titulo: 'Perdidos',
-      texto: 'Publique o pet que sumiu e aviste a rede na sua região.',
+      texto: 'Publique o pet que sumiu e avise a rede na sua região.',
       icone: 'sad-outline',
       cor: 'danger',
     },
     {
       titulo: 'Encontrados',
-      texto: 'Achou um pet pela rua? Aviste a comunidade e cuide dele.',
+      texto: 'Achou um pet pela rua? Avise a comunidade e cuide dele.',
       icone: 'happy-outline',
       cor: 'warning',
     },
@@ -111,5 +122,37 @@ export class SobrePage {
       homeOutline, sadOutline, heartOutline, heart, logoInstagram,
       logoWhatsapp, mailOutline, chevronForwardOutline
     });
+  }
+
+  async ionViewWillEnter(): Promise<void> {
+    await this.apurar();
+  }
+
+  private async apurar(): Promise<void> {
+    try {
+      const todas = await this.storage.listar();
+
+      this.estatisticas = [
+        {
+          valor: String(todas.length),
+          rotulo: 'pets cadastrados',
+          icone: 'paw',
+        },
+        {
+          valor: String(todas.filter(o => o.resolvido).length),
+          rotulo: 'casos resolvidos',
+          icone: 'happy-outline',
+        },
+        {
+          valor: String(todas.filter(o => o.tipo === 'adocao' && !o.resolvido).length),
+          rotulo: 'aguardando adoção',
+          icone: 'heart-outline',
+        },
+      ];
+    } catch (e) {
+      console.error('[sobre] ERRO', e);
+    } finally {
+      this.cdr.markForCheck();
+    }
   }
 }

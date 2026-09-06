@@ -1,12 +1,4 @@
-/*
- * App Global CSS — Rede Patas de Canoas
- * ----------------------------------------------------------------------------
- * Além dos imports do Ionic, este arquivo concentra o design system
- * compartilhado entre as telas (cards de pet, chips de status, mapa
- * decorativo, botões-gradiente etc.), para não duplicar SCSS por página.
- */
-
-/* Core CSS required for Ionic components to work properly */
+/* App Global CSS — Rede Patas de Canoas */
 @import "@ionic/angular/css/core.css";
 
 /* Basic CSS for apps built with Ionic */
@@ -21,27 +13,13 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
-
-/**
- * Dark Mode
- * -----------------------------------------------------
- * O design system atual foi desenhado para o tema claro.
- * Para suportar dark mode no futuro, reative um dos palettes abaixo:
- * https://ionicframework.com/docs/theming/dark-mode
- */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-/* @import "@ionic/angular/css/palettes/dark.system.css"; */
-
-// ============================================================================
-// Base
-// ============================================================================
-
+ 
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-// Nada de caixa-alta automática nos botões (estilo mais moderno)
+// Nada de caixa-alta automática nos botões
 ion-button {
   text-transform: none;
   font-weight: 800;
@@ -54,23 +32,19 @@ ion-toolbar {
   --padding-end: 16px;
 }
 
-// ============================================================================
 // Layout
-// ============================================================================
-
-// Container padrão das páginas (centraliza em telas largas, ex. tablets)
+ 
 .app-container {
   padding: 4px 18px 40px;
   max-width: 620px;
   margin: 0 auto;
 }
 
-// Deixa espaço para barras de ação fixas no rodapé
 .app-container.com-rodape {
   padding-bottom: 130px;
 }
 
-// Título de seção (etiqueta pequena em caixa-alta)
+// Título de seção
 .app-secao-titulo {
   display: flex;
   align-items: center;
@@ -88,9 +62,7 @@ ion-toolbar {
   }
 }
 
-// ============================================================================
-// Cards de pet (Feed e Mapa)
-// ============================================================================
+// Cards de pet
 
 .pet-card {
   background: var(--ion-card-background);
@@ -109,7 +81,6 @@ ion-toolbar {
 .pet-foto {
   position: relative;
   height: 190px;
-  // Fallback amigável caso a foto não carregue
   background: linear-gradient(135deg, #ffe8d9, #ffd3b8);
 
   &::before {
@@ -229,9 +200,7 @@ ion-toolbar {
   }
 }
 
-// ============================================================================
 // Estado vazio
-// ============================================================================
 
 .estado-vazio {
   text-align: center;
@@ -266,9 +235,7 @@ ion-toolbar {
   }
 }
 
-// ============================================================================
-// Trilho de filtros (chips roláveis na horizontal)
-// ============================================================================
+// Trilho de filtros  
 
 .trilho-chips {
   display: flex;
@@ -308,9 +275,7 @@ ion-chip.chip-filtro {
   }
 }
 
-// ============================================================================
-// Botão-gradiente da marca (usado nas ações principais)
-// ============================================================================
+// Botão-gradiente da marca  
 
 ion-button.botao-gradiente {
   --background: linear-gradient(135deg, #f97316 0%, #ea580c 55%, #dc2626 130%);
@@ -321,9 +286,7 @@ ion-button.botao-gradiente {
   height: 50px;
 }
 
-// ============================================================================
-// Mapa decorativo (placeholder visual até o mapa real entrar)
-// ============================================================================
+// Mapa decorativo 
 
 .mapa-falso {
   position: relative;

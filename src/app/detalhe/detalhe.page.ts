@@ -1,101 +1,41 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import {
-  IonContent, IonHeader, IonToolbar, IonButtons, IonBackButton,
-  IonButton, IonIcon, IonFooter
-} from '@ionic/angular'; // <-- Sem /standalone
-import { RouterModule } from '@angular/router';
+  IonContent, IonHeader, IonToolbar, IonButtons, IonBackButton, IonFooter,
+  IonIcon, IonButton, ToastController, AlertController
+} from '@ionic/angular';
 
 import { addIcons } from 'ionicons';
 import {
-  timeOutline, shareSocialOutline, locationOutline, navigateOutline,
-  chevronForwardOutline, callOutline, chatbubbleEllipsesOutline,
-  documentTextOutline, checkmarkCircleOutline, calendarClearOutline,
-  colorPaletteOutline, resizeOutline, paw
+  paw, pawOutline, locationOutline, walkOutline, callOutline, timeOutline,
+  documentTextOutline, checkmarkCircleOutline, colorPaletteOutline,
+  resizeOutline, chevronForwardOutline, chatbubbleEllipsesOutline
 } from 'ionicons/icons';
+
+import { StorageService } from '../services/storage.service';
+import { LocalService, Coordenada } from '../services/local.service';
+import { FotoService } from '../services/foto.service';
+import { CartazService } from '../services/cartaz.service';
+import { Ocorrencia } from '../models/ocorrencia.model';
 
 type StatusPet = 'perdido' | 'encontrado' | 'adocao';
 
+/** Modelo de exibição da tela */
 interface PetDetalhe {
+  id: string;
   nome: string;
   status: StatusPet;
   especie: string;
   porte: string;
   cor: string;
-  idade: string;
   descricao: string;
   local: string;
-  referencia: string;
-  contatoNome: string;
-  contatoPapel: string;
-  contatoFone: string;
-  foneE164: string;
+  coordenadas: string;
+  distancia: string;
   tempo: string;
   foto: string;
+  contatoFone: string;
 }
-
-// TODO: Lucas implementa a lógica nativa aqui — registros ilustrativos;
-// os dados reais virão do StorageService (busca por id).
-const PETS_EXEMPLO: Record<string, PetDetalhe> = {
-  bolinha: {
-    nome: 'Bolinha',
-    status: 'perdido',
-    especie: 'Cão',
-    porte: 'Médio',
-    cor: 'Caramelo',
-    idade: 'Adulto (cerca de 4 anos)',
-    descricao:
-      'O Bolinha desapareceu no fim da tarde perto do La Salle. Ele é muito dócil, ' +
-      'se dá bem com outros cachorros e estava usando uma coleira azul quando sumiu. ' +
-      'Responde pelo nome e adora biscoito — se você avistar, chame ele com carinho!',
-    local: 'Visto perto do La Salle',
-    referencia: 'Rua dos Andradas, próximo à portaria principal',
-    contatoNome: 'Protetora Ana',
-    contatoPapel: 'Protetora voluntária · Rede Patas',
-    contatoFone: '(51) 99999-9990',
-    foneE164: '+5551999999990',
-    tempo: 'há 2 h',
-    foto: 'https://placedog.net/720/560?id=12',
-  },
-  thor: {
-    nome: 'Thor',
-    status: 'encontrado',
-    especie: 'Cão',
-    porte: 'Grande',
-    cor: 'Preto e branco',
-    idade: 'Adulto (cerca de 5 anos)',
-    descricao:
-      'Encontrei o Thor vagando no Parque Getúlio Vargas na manhã de hoje. ' +
-      'Está saudável, muito manso e aparenta ter família: conhece comandos básicos ' +
-      'como "senta" e "deita". Vamos achar o tutor dele!',
-    local: 'Encontrado no Parque Getúlio Vargas',
-    referencia: 'Perto da quadra de areia',
-    contatoNome: 'Protetor Júlio',
-    contatoPapel: 'Morador · Bairro Centro',
-    contatoFone: '(51) 99999-9991',
-    foneE164: '+5551999999991',
-    tempo: 'há 1 dia',
-    foto: 'https://placedog.net/720/560?id=27',
-  },
-  nina: {
-    nome: 'Nina',
-    status: 'adocao',
-    especie: 'Cadelinha',
-    porte: 'Pequena',
-    cor: 'Preta',
-    idade: 'Filhote (cerca de 4 meses)',
-    descricao:
-      'A Nina foi resgatada ainda bebê e já está vermifugada e com a primeira dose de vacina. ' +
-    'É super brincalhona, convive bem com gatos e precisa de uma família que tenha paciência com filhotes.',
-    local: 'Abrigo da protetora Ana, Igara',
-    referencia: 'Retirada com visita prévia ao abrigo',
-    contatoNome: 'Protetora Ana',
-    contatoPapel: 'Protetora voluntária · Rede Patas',
-    contatoFone: '(51) 99999-9990',
-    foneE164: '+5551999999990',
-    tempo: 'há 2 dias',
-    foto: 'https://placedog.net/720/560?id=45',
-  },
-};
 
 const ROTULOS_STATUS: Record<StatusPet, string> = {
   perdido: 'Perdido',
@@ -109,54 +49,171 @@ const ROTULOS_STATUS: Record<StatusPet, string> = {
   styleUrls: ['./detalhe.page.scss'],
   standalone: true,
   imports: [
-    IonContent, IonHeader, IonToolbar, IonButtons, IonBackButton,
-    IonButton, IonIcon, IonFooter, RouterModule
+    IonContent, IonHeader, IonToolbar, IonButtons, IonBackButton, IonFooter,
+    IonIcon, IonButton, RouterModule
   ],
 })
-export class DetalhePage implements OnInit {
-  // Chega via query param (?id=...) — comComponentInputBinding já está ativo no main.ts
-  @Input() id = 'bolinha';
+export class DetalhePage {
 
-  pet: PetDetalhe = PETS_EXEMPLO['bolinha'];
+  private rota = inject(ActivatedRoute);
+  private router = inject(Router);
+  private storage = inject(StorageService);
+  private local = inject(LocalService);
+  private fotoSrv = inject(FotoService);
+  private cartazSrv = inject(CartazService);
+  private toast = inject(ToastController);
+  private alerta = inject(AlertController);
+  private cdr = inject(ChangeDetectorRef);
+
+  pet: PetDetalhe | null = null;
+  carregando = true;
+  gerando = false;
+
+  /** Registro original, mantido para gerar cartaz e atualizar a persistência. */
+  private ocorrencia: Ocorrencia | null = null;
+  private minhaPosicao: Coordenada = { lat: -29.9177, lng: -51.1836 };
 
   constructor() {
     addIcons({
-      timeOutline, shareSocialOutline, locationOutline, navigateOutline,
-      chevronForwardOutline, callOutline, chatbubbleEllipsesOutline,
-      documentTextOutline, checkmarkCircleOutline, calendarClearOutline,
-      colorPaletteOutline, resizeOutline, paw
+      paw, pawOutline, locationOutline, walkOutline, callOutline, timeOutline,
+      documentTextOutline, checkmarkCircleOutline, colorPaletteOutline,
+      resizeOutline, chevronForwardOutline, chatbubbleEllipsesOutline
     });
   }
 
-  ngOnInit(): void {
-    this.pet = PETS_EXEMPLO[this.id] ?? PETS_EXEMPLO['bolinha'];
+  async ionViewWillEnter(): Promise<void> {
+    await this.carregar();
+  }
+
+  private async carregar(): Promise<void> {
+    this.carregando = true;
+    try {
+      const id = this.rota.snapshot.queryParamMap.get('id');
+      if (!id) { this.pet = null; return; }
+
+      const todas = await this.storage.listar();
+      this.ocorrencia = todas.find(o => o.id === id) ?? null;
+      if (!this.ocorrencia) { this.pet = null; return; }
+
+      try {
+        this.minhaPosicao = await this.local.posicaoAtual();
+      } catch {
+        // sem GPS a tela continua utilizável, só perde a distância (RNF07)
+      }
+
+      this.pet = this.paraDetalhe(this.ocorrencia);
+    } catch (e) {
+      console.error('[detalhe] ERRO', e);
+      await this.aviso('Não foi possível carregar a ocorrência');
+    } finally {
+      this.carregando = false;
+      this.cdr.markForCheck();
+    }
+  }
+
+  private paraDetalhe(o: Ocorrencia): PetDetalhe {
+    const km = (o.lat && o.lng)
+      ? this.local.distanciaKm(this.minhaPosicao, { lat: o.lat, lng: o.lng })
+      : 0;
+
+    return {
+      id: o.id,
+      nome: o.nome || 'Sem nome',
+      status: o.tipo as StatusPet,
+      especie: this.capitalizar(o.especie),
+      porte: this.capitalizar(o.porte),
+      cor: o.cor || 'Não informada',
+      descricao: o.descricao || 'Sem descrição informada.',
+      local: o.referencia || 'Local não informado',
+      coordenadas: (o.lat && o.lng) ? `${o.lat.toFixed(5)}, ${o.lng.toFixed(5)}` : '',
+      distancia: this.local.formatarDistancia(km),
+      tempo: this.tempoRelativo(o.data),
+      foto: this.fotoSrv.paraExibicao(o.foto),
+      contatoFone: o.contato || '',
+    };
+  }
+
+  private capitalizar(v: string): string {
+    return v ? v.charAt(0).toUpperCase() + v.slice(1) : '';
+  }
+
+  private tempoRelativo(iso: string): string {
+    const min = Math.floor((Date.now() - new Date(iso).getTime()) / 60000);
+    if (min < 1)  { return 'agora'; }
+    if (min < 60) { return `há ${min} min`; }
+    const h = Math.floor(min / 60);
+    if (h < 24)   { return `há ${h} h`; }
+    const d = Math.floor(h / 24);
+    return d === 1 ? 'ontem' : `há ${d} dias`;
   }
 
   rotulo(status: StatusPet): string {
     return ROTULOS_STATUS[status];
   }
 
-  get zapLink(): string {
-    return 'https://wa.me/' + this.pet.foneE164.replace(/\D/g, '');
+  iniciais(nome: string): string {
+    return nome.trim().split(/\s+/).slice(0, 2).map(p => p[0]).join('').toUpperCase();
   }
 
-  iniciais(nome: string): string {
-    return nome.split(' ').map(parte => parte[0]).slice(0, 2).join('').toUpperCase();
+  private get somenteDigitos(): string {
+    return (this.pet?.contatoFone || '').replace(/\D/g, '');
+  }
+
+  get zapLink(): string {
+    const texto = encodeURIComponent(`Olá! Vi o registro de ${this.pet?.nome} no app Rede Patas de Canoas.`);
+    return `https://wa.me/55${this.somenteDigitos}?text=${texto}`;
+  }
+
+  ligar(): void {
+    if (!this.somenteDigitos) { return; }
+    window.open(`tel:${this.somenteDigitos}`, '_system');
   }
 
   falhaFoto(): void {
-    this.pet.foto = '';
+    if (this.pet) { this.pet.foto = ''; }
   }
 
-  compartilhar(): void {
-    // TODO: Lucas implementa a lógica nativa aqui (compartilhar do Capacitor).
+  /** RF10 — gera o cartaz de divulgação em PDF. */
+  async gerarCartaz(): Promise<void> {
+    if (!this.ocorrencia || this.gerando) { return; }
+    this.gerando = true;
+    try {
+      await this.cartazSrv.gerar(this.ocorrencia);
+      await this.aviso('Cartaz gerado');
+    } catch (e) {
+      console.error('[detalhe] cartaz', e);
+      await this.aviso('Não foi possível gerar o cartaz');
+    } finally {
+      this.gerando = false;
+      this.cdr.markForCheck();
+    }
   }
 
-  gerarCartaz(): void {
-    // TODO: Lucas implementa a lógica nativa aqui (geração de PDF / cartaz).
+  /** RF13 — encerra a ocorrência. */
+  async marcarResolvido(): Promise<void> {
+    if (!this.ocorrencia) { return; }
+
+    const a = await this.alerta.create({
+      header: 'Encerrar ocorrência',
+      message: `Confirmar que o caso de ${this.ocorrencia.nome} foi resolvido?`,
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Confirmar',
+          handler: async () => {
+            this.ocorrencia!.resolvido = true;
+            await this.storage.salvar(this.ocorrencia!);
+            await this.aviso('Ocorrência encerrada');
+            this.router.navigate(['/feed']);
+          },
+        },
+      ],
+    });
+    await a.present();
   }
 
-  marcarResolvido(): void {
-    // TODO: Lucas implementa a lógica nativa aqui (atualizar status no StorageService).
+  private async aviso(mensagem: string): Promise<void> {
+    const t = await this.toast.create({ message: mensagem, duration: 1800 });
+    await t.present();
   }
 }

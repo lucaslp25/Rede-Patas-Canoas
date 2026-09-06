@@ -10,8 +10,8 @@ export interface Ocorrencia {
     foto: string; // base64 comprimido 
     lat: number;
     lng: number;
-    referencia: string;   // "perto do La Salle" 
+    referencia: string;  
     contato: string; 
-    data: string;         // ISO
+    data: string;
     resolvido: boolean; 
 }
